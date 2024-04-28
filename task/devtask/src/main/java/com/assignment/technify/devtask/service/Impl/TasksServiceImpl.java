@@ -39,8 +39,38 @@ public class TasksServiceImpl implements TasksService{
 	@Override
 	public List<TasksDto> getAllTasks() {
 		List<Tasks> tasks = tasksRepository.findAll();
-		return (List<TasksDto>) tasks.stream().map((tasks) -> TasksMapper.mapToTasksDto(tasks))
-				.collect(Collectors.toList());
+		return tasks.stream().map((task) -> TasksMapper.mapToTasksDto(task))
+			    .collect(Collectors.toList());
+
+	}
+
+	@Override
+	public TasksDto updateTasks(Long tasksId, TasksDto updatedTasks) {
+		
+		Tasks tasks = tasksRepository.findById(tasksId).orElseThrow(
+				() -> new ResourceNotFoundException("Tasks does not exist with id: " + tasksId)
+		);
+		
+		tasks.setName(updatedTasks.getName());
+		tasks.setDescription(updatedTasks.getDescription());
+		
+		
+		Tasks updatedTasksObj = tasksRepository.save(tasks);
+		
+		
+		return TasksMapper.mapToTasksDto(updatedTasksObj);
+	}
+
+	@Override
+	public void deleteTasks(Long tasksId) {
+		
+		Tasks tasks = tasksRepository.findById(tasksId).orElseThrow(
+				() -> new ResourceNotFoundException("Tasks does not exist with id: " + tasksId)
+		);
+		
+		tasksRepository.deleteById(tasksId);
+		
+		
 	}
 	
 

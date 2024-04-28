@@ -11,6 +11,10 @@ public interface TasksService {
 	TasksDto getTasksById(Long tasksId);
 	
 	List<TasksDto> getAllTasks();
+	
+	TasksDto updateTasks(Long tasksId, TasksDto updatedTasks);
+	
+	void deleteTasks(Long tasksId);
 
 
 }
